@@ -80,20 +80,19 @@ int main(int argc, char **argv)
 
       // Add named OpenGL viewport to window and provide 3D Handler
       pangolin::View& d_cam = pangolin::CreateDisplay()
-            .SetBounds(0.0, 1.0, pangolin::Attach::Pix(175), 1.0, -1024.0f/768.0f)
+            .SetBounds(0.0, 1.0, pangolin::Attach::Pix(0), 1.0, -1024.0f/768.0f)
             .SetHandler(new pangolin::Handler3D(s_cam));
 
-      pangolin::OpenGlMatrix Twc;
-      Twc.SetIdentity();
-
+      // Start sending pointcloud to Pangolin frames
       while(true)
       {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        d_cam.Activate(s_cam);
+        glClearColor(1.0f,1.0f,1.0f,1.0f);
+        localDrawer->DrawMapPoints();
+        pangolin::FinishFrame();
       }
     }
-
-    // cv::Mat test = mapPointsP[0]->GetWorldPos();
-    // cout << test << endl;
   }
   catch(exception& ex) {
     cout << ex.what() << endl;
